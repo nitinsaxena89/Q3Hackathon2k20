@@ -146,8 +146,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GASiteLinkModifier.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GAFeedsHelper.cs" />
+    <Compile Include="SiteLinkFeedItemHelper.cs" />
+    <Compile Include="SiteLinkModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
