@@ -111,25 +111,34 @@ namespace GASiteLinkExtensionUpdater
             }
             return null;
         }
-
+        
+        /// <summary>
+        ///Creates FeedItem Object from SiteLinkModel Object 
+        /// </summary>
+        /// <param name="siteLinkModelObject">SiteLinkModelObject</param>
+        /// <returns>Feed Item</returns>
         public FeedItem CreateFeedItem(SiteLinkModel siteLinkModelObject)
         {
             FeedItem feedItem = new FeedItem();
             feedItem.feedId = siteLinkModelObject.FeedId;
             feedItem.feedItemId = siteLinkModelObject.FeedItemId;
 
+            //Feed Attribute ID for Text is 1
             FeedItemAttributeValue text = new FeedItemAttributeValue();
             text.feedAttributeId = 1;
             text.stringValue = siteLinkModelObject.Text;
 
+            //Feed Attribute ID for Description Line#1 is 3
             FeedItemAttributeValue descriptionLine1 = new FeedItemAttributeValue();
             descriptionLine1.feedAttributeId = 3;
             descriptionLine1.stringValue = siteLinkModelObject.DescriptionLine1;
 
+            //Feed Attribute ID for Description Line2 is 4
             FeedItemAttributeValue descriptionLine2 = new FeedItemAttributeValue();
             descriptionLine2.feedAttributeId = 4;
             descriptionLine2.stringValue = siteLinkModelObject.DescriptionLine2;
 
+            //Feed Attribute ID for Final URL is 5
             FeedItemAttributeValue finalUrl = new FeedItemAttributeValue();
             finalUrl.feedAttributeId = 5;
             finalUrl.stringValues = new string[]

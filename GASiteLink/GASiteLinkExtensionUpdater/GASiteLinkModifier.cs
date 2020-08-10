@@ -9,7 +9,7 @@ namespace GASiteLinkExtensionUpdater
         /// <summary>
         /// Modifies SiteLink Extension at Customer Level
         /// </summary>
-        /// <param name="user">Customer User Id</param>
+        /// <param name="user">Adwords User Object</param>
         /// <param name="sitelinkFeedItem">SiteLinkFeedItem with Details</param>
         /// <returns>Updated CustomerExtensionSettings</returns>
         public CustomerExtensionSetting UpdateSiteLinkAtCustomerLevelUsingCustExtSetService(AdWordsUser user, SitelinkFeedItem sitelinkFeedItem)
@@ -34,18 +34,18 @@ namespace GASiteLinkExtensionUpdater
                 if (returnValue.value != null && returnValue.value.Length > 0)
                 {
                     CustomerExtensionSetting modifiedExtensionSetting = returnValue.value[0];
-                    Logger.Log(Logger.LogType.INFO, "Modification Successful");
+                    Logger.Log(Logger.LogType.INFO, "Modification Successful for Feed(ID): " + sitelinkFeedItem.feedId + " with FeedItem(ID): " + sitelinkFeedItem.feedItemId);
                     return modifiedExtensionSetting;
                 }
                 else
                 {
-                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified");
+                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified for Feed(ID): " + sitelinkFeedItem.feedId + " with FeedItem(ID): " + sitelinkFeedItem.feedItemId);
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (AdWordsApiException ex)
             {
-                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message);
+                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message + Environment.NewLine + ex.InnerException);
                 return null;
             }
 
@@ -54,9 +54,9 @@ namespace GASiteLinkExtensionUpdater
         /// <summary>
         /// Update Site Link using Feed Item Service
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="feedItem"></param>
-        /// <returns></returns>
+        /// <param name="user">Adwords User Object</param>
+        /// <param name="feedItem">Feed Item on which Operation to be performed</param>
+        /// <returns>FeedItem returned after performing SET Operation</returns>
         public FeedItem UpdateSiteLinkUsingFeedItemService(AdWordsUser user, FeedItem feedItem)
         {
             FeedItemService feedItemService = (FeedItemService)user.GetService(AdWordsService.v201809.FeedItemService);
@@ -69,18 +69,18 @@ namespace GASiteLinkExtensionUpdater
                 if (feedItemReturnValue.value != null && feedItemReturnValue.value.Length > 0)
                 {
                     FeedItem modifiedFeedItem = feedItemReturnValue.value[0];
-                    Logger.Log(Logger.LogType.INFO, "Modification Successful");
+                    Logger.Log(Logger.LogType.INFO, "Modification Successful for Feed(ID): " + feedItem.feedId + " with FeedItem(ID): " + feedItem.feedItemId);
                     return modifiedFeedItem;
                 }
                 else
                 {
-                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified");
+                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified for Feed(ID): " + feedItem.feedId + " with FeedItem(ID): " + feedItem.feedItemId);
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (AdWordsApiException ex)
             {
-                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message);
+                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message+ Environment.NewLine + ex.InnerException);
                 return null;
             }
         }
@@ -88,10 +88,10 @@ namespace GASiteLinkExtensionUpdater
         /// <summary>
         /// Updates Site Link Extension at Campaign Level
         /// </summary>
-        /// <param name="user">Adwords User</param>
-        /// <param name="sitelinkFeedItem"></param>
-        /// <param name="campaignId"></param>
-        /// <returns></returns>
+        /// <param name="user">Adwords User Object</param>
+        /// <param name="sitelinkFeedItem">SiteLinkFeedItem containing Values to be update</param>
+        /// <param name="campaignId">Campaign ID</param>
+        /// <returns>Campaign Extension Setting Object with Updated Values</returns>
         public CampaignExtensionSetting UpdateSiteLinkAtCampaignLevel(AdWordsUser user, SitelinkFeedItem sitelinkFeedItem,long campaignId)
         {
             CampaignExtensionSettingService campaignExtensionSettingService = (CampaignExtensionSettingService)user.GetService(AdWordsService.v201809.CampaignExtensionSettingService);
@@ -117,19 +117,19 @@ namespace GASiteLinkExtensionUpdater
                 if (campaignExtensionSettingReturnValue.value != null && campaignExtensionSettingReturnValue.value.Length > 0)
                 {
                     CampaignExtensionSetting modifiedExtensionItem = campaignExtensionSettingReturnValue.value[0];
-                    Logger.Log(Logger.LogType.INFO, "Modification Successful");
+                    Logger.Log(Logger.LogType.INFO, "Modification Successful for Feed(ID): " + sitelinkFeedItem.feedId + " with FeedItem(ID): " + sitelinkFeedItem.feedItemId);
                     return modifiedExtensionItem;
                 }
                 else
                 {
-                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified");
+                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified for Feed(ID): " + sitelinkFeedItem.feedId + " with FeedItem(ID): " + sitelinkFeedItem.feedItemId);
                     return null;
                 }
 
             }
-            catch (Exception ex)
+            catch (AdWordsApiException ex)
             {
-                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message);
+                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message + Environment.NewLine + ex.InnerException);
                 return null;
             }
 
@@ -138,10 +138,10 @@ namespace GASiteLinkExtensionUpdater
         /// <summary>
         /// Restrict a Feed Item to an AdGroup 
         /// </summary>
-        /// <param name="user">Adwords User</param>
+        /// <param name="user">Adwords User Object</param>
         /// <param name="feedItem">Feed Item</param>
         /// <param name="adGroupId">Ad Group ID</param>
-        /// <returns></returns>
+        /// <returns>FeedItemAdGroupTarget Object with Details of Updated SiteLink</returns>
         public FeedItemAdGroupTarget RestrictFeedItemToAdGroup(AdWordsUser user,FeedItem feedItem, long adGroupId)
         {
             FeedItemTargetService feedItemTargetService = (FeedItemTargetService)user.GetService(AdWordsService.v201809.FeedItemTargetService);
@@ -162,18 +162,18 @@ namespace GASiteLinkExtensionUpdater
                 if (feedItemTargetReturnValue.value != null && feedItemTargetReturnValue.value.Length > 0)
                 {
                     FeedItemAdGroupTarget modifiedTargetItem = (FeedItemAdGroupTarget)feedItemTargetReturnValue.value[0];
-                    Logger.Log(Logger.LogType.INFO, "Modification Successful");
+                    Logger.Log(Logger.LogType.INFO, "Modification Successful for Feed(ID): "+feedItem.feedId+" with FeedItem(ID): "+feedItem.feedItemId);
                     return modifiedTargetItem;
                 }
                 else
                 {
-                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified");
+                    Logger.Log(Logger.LogType.WARNING, "Nothing Modified for Feed(ID): " + feedItem.feedId + " with FeedItem(ID): " + feedItem.feedItemId);
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (AdWordsApiException ex)
             {
-                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message);
+                Logger.Log(Logger.LogType.EXCEPTION, Environment.NewLine + ex.Message + Environment.NewLine + ex.InnerException);
                 return null;
             }
         }
