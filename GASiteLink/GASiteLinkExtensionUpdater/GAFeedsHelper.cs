@@ -1,15 +1,13 @@
 ﻿using Google.Api.Ads.AdWords.Lib;
-using Google.Api.Ads.AdWords.Util.Selectors;
 using Google.Api.Ads.AdWords.v201809;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.InteropServices;
 
 namespace GASiteLinkExtensionUpdater
 {
     class GAFeedsHelper : Program
     {
-
         /// <summary>
         /// Gets the feeds.
         /// </summary>
@@ -32,10 +30,9 @@ namespace GASiteLinkExtensionUpdater
                     },
                     predicates = new Predicate[]
                     {
-                        //Predicate.Contains(Feed.FilterableFields.Name,"sitelink")
+                        Predicate.Contains(Feed.FilterableFields.Name,"sitelink")
                     },
                     paging = Paging.Default
-                    
                 };
 
                 FeedPage page = feedService.get(selector);
@@ -53,27 +50,42 @@ namespace GASiteLinkExtensionUpdater
         /// <param name="user">The user that owns the feed.</param>
         /// <param name="feedId">The feed ID.</param>
         /// <returns>The list of feed items in the feed.</returns>
-        public FeedItem[] GetFeedItems(AdWordsUser user, long feedId)
+        public FeedItem[] GetFeedItems(AdWordsUser user, long feedId, [Optional]long feedItemId)
         {
             using (FeedItemService feedItemService = (FeedItemService)user.GetService(AdWordsService.v201809.FeedItemService))
             {
                 Selector selector = new Selector()
                 {
-                   fields = new string[] { 
-                    FeedItem.Fields.FeedId,
-                    FeedItem.Fields.FeedItemId,
-                    FeedItem.Fields.AttributeValues,
-                    FeedItem.Fields.PolicySummaries,
-                    FeedItem.Fields.StartTime,
-                    FeedItem.Fields.EndTime,
-                    FeedItem.Fields.Status,
-                    FeedItem.Fields.UrlCustomParameters,
-                   },
-                    predicates = new Predicate[] {
-                    Predicate.Equals(FeedItem.FilterableFields.FeedId,feedId)
-                },
-                    paging = Paging.Default
+                    fields = new string[] {
+                        FeedItem.Fields.FeedId,
+                        FeedItem.Fields.FeedItemId,
+                        FeedItem.Fields.AttributeValues,
+                        FeedItem.Fields.PolicySummaries,
+                        FeedItem.Fields.StartTime,
+                        FeedItem.Fields.EndTime,
+                        FeedItem.Fields.Status,
+                        FeedItem.Fields.UrlCustomParameters,
+                    },
                 };
+
+                Predicate[] predicates;
+                if(feedItemId != 0)
+                {
+                    predicates = new Predicate[] {
+                        Predicate.Equals(FeedItem.FilterableFields.FeedId, feedId),
+                        Predicate.Equals(FeedItem.FilterableFields.FeedItemId, feedItemId),
+                    };
+                }
+                else
+                {
+                    predicates = new Predicate[] {
+                        Predicate.Equals(FeedItem.FilterableFields.FeedId, feedId),
+                    };
+                }
+
+                selector.predicates = predicates;
+                selector.paging = Paging.Default;
+
                 FeedItemPage page = feedItemService.get(selector);
                 if (page.totalNumEntries > 0)
                 {
@@ -90,7 +102,7 @@ namespace GASiteLinkExtensionUpdater
         /// <param name="feedItemArray">FeedItem Array</param>
         /// <param name="feedItemId">The Feed Item Id</param>
         /// <returns></returns>
-        public FeedItem GetFeedItemByFeedItemId(FeedItem[] feedItemArray,long feedItemId)
+        public FeedItem GetFeedItemByFeedItemId(FeedItem[] feedItemArray, long feedItemId)
         {
             IEnumerable<FeedItem> items = feedItemArray.Where(feedItem => feedItem.feedItemId == feedItemId);
             if (items.Any())

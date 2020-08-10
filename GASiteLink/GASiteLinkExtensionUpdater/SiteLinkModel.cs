@@ -5,6 +5,8 @@ namespace GASiteLinkExtensionUpdater
     public class SiteLinkModel
     {
         private FeedType _feedType;
+        
+        public string AccountId { get; set; }
         public FeedType TypeOfFeed { get { return _feedType; } set { _feedType = FeedType.SITELINK; } }
         public long FeedId { get; set; }
         public long FeedItemId { get; set; }
