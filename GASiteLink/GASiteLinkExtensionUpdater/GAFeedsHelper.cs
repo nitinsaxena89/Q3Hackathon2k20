@@ -100,5 +100,40 @@ namespace GASiteLinkExtensionUpdater
             return null;
         }
 
+        public FeedItem CreateFeedItem(SiteLinkModel siteLinkModelObject)
+        {
+            FeedItem feedItem = new FeedItem();
+            feedItem.feedId = siteLinkModelObject.FeedId;
+            feedItem.feedItemId = siteLinkModelObject.FeedItemId;
+
+            FeedItemAttributeValue text = new FeedItemAttributeValue();
+            text.feedAttributeId = 1;
+            text.stringValue = siteLinkModelObject.Text;
+
+            FeedItemAttributeValue descriptionLine1 = new FeedItemAttributeValue();
+            descriptionLine1.feedAttributeId = 3;
+            descriptionLine1.stringValue = siteLinkModelObject.DescriptionLine1;
+
+            FeedItemAttributeValue descriptionLine2 = new FeedItemAttributeValue();
+            descriptionLine2.feedAttributeId = 4;
+            descriptionLine2.stringValue = siteLinkModelObject.DescriptionLine2;
+
+            FeedItemAttributeValue finalUrl = new FeedItemAttributeValue();
+            finalUrl.feedAttributeId = 5;
+            finalUrl.stringValues = new string[]
+                {
+                    siteLinkModelObject.Url
+                };
+
+            feedItem.attributeValues = new FeedItemAttributeValue[]
+            {
+                text,
+                descriptionLine1,
+                descriptionLine2,
+                finalUrl
+            };
+
+            return feedItem;
+        }
     }
 }
