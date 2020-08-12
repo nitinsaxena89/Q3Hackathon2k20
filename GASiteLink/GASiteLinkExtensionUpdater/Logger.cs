@@ -17,7 +17,9 @@ namespace GASiteLinkExtensionUpdater
                 }
                 using (StreamWriter sw = File.AppendText(logFilePath))
                 {
-                    sw.WriteLine(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff") + ": [" + logType + "] " + message);
+                    string logMessage = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff") + ": [" + logType + "] " + message;
+                    sw.WriteLine(logMessage);
+                    Console.WriteLine(logMessage);
                 }
             }catch(Exception ex)
             {
