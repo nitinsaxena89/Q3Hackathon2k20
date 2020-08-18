@@ -49,7 +49,7 @@ namespace GASiteLinkExtensionUpdater
                         }
                         else
                         {
-                            sitelink.ActionStatus = "Data Updated Successful.";
+                            sitelink.ActionStatus = "Data Updated Successfully.";
                         }
                     }
 
